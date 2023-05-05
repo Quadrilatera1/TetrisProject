@@ -24,7 +24,11 @@ class GameView : View  {
     }
     override fun onDraw(canvas: Canvas?){
         super.onDraw(canvas)
+
         if (canvas != null){
+
+            paint.color = Color.BLACK
+            canvas.drawCircle(gameHeight/2, gameWidth/2,50f, paint)
 
         }
     }

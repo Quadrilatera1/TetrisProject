@@ -14,6 +14,7 @@ class TetrisActivity: Activity() {
     private lateinit var game : Tetris
     private lateinit var detector : GestureDetector
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -28,14 +29,14 @@ class TetrisActivity: Activity() {
         game = gameView.getGame()
 
 
-        setContentView(gameView)
+        setContentView(R.layout.activity_tetris)
 
         var th : TouchHandler = TouchHandler()
         detector = GestureDetector( this, th )
         detector.setOnDoubleTapListener( th )
 
-        var gameTimer : Timer = Timer( )
-        gameTimer.schedule( GameTimerTask( this ), 0, 0L + GameView.DELTA_TIME  )
+        //var gameTimer : Timer = Timer( )
+        //gameTimer.schedule( GameTimerTask( this ), 0, 0L + GameView.DELTA_TIME)
 
     }
     fun goBack( v : View) {
@@ -45,7 +46,11 @@ class TetrisActivity: Activity() {
     fun updateView( ) {
         gameView.postInvalidate()
     }
-    fun updateModel(){
+    fun updateModel() {
+
+        if (game.rowIsFull()) {
+            game.clearRow()
+        }
 
     }
 
