@@ -3,6 +3,7 @@ package com.example.tetrisgroupproject
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
+import android.widget.GridLayout
 import java.util.*
 import kotlin.math.*
 
@@ -11,8 +12,6 @@ class Tetris {
     private var score: Int = 0
     private var highScore: Int = 0
     private var gameOver : Boolean = false
-    private lateinit var currShape : Shape
-    private lateinit var nextShape : Shape
     private lateinit var editor : SharedPreferences.Editor
     private lateinit var pref: SharedPreferences
 
@@ -36,16 +35,13 @@ class Tetris {
 
     fun moveShapeDown() {
 
-        this.currShape.moveShapeDown()
 
     }
 
     fun moveShapeLeft() {
-        this.currShape.moveShapeLeft()
     }
 
     fun moveShapeRight() {
-        this.currShape.moveShapeRight()
     }
 
     fun rowIsFull() : Boolean {

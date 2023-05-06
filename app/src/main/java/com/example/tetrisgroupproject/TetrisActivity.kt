@@ -3,16 +3,22 @@ package com.example.tetrisgroupproject
 import android.app.Activity
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.Color
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
+import android.widget.GridLayout
+import android.widget.Button
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import java.util.*
 
 class TetrisActivity: Activity() {
     private lateinit var gameView : GameView
     private lateinit var game : Tetris
     private lateinit var detector : GestureDetector
+    private lateinit var board : GridLayout
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,6 +27,18 @@ class TetrisActivity: Activity() {
         var width : Int = Resources.getSystem( ).displayMetrics.widthPixels
         var height : Int = Resources.getSystem( ).displayMetrics.heightPixels
 
+
+        setContentView(R.layout.activity_tetris)
+
+
+        this.board = findViewById(R.id.board)
+
+        var tv = TextView(this)
+        tv.text = "This is a textview"
+
+        board.addView(tv)
+
+
         var statusBarId : Int = resources.getIdentifier(
             "status_bar_height", "dimen", "android" )
         var statusBarHeight : Int = resources.getDimensionPixelSize( statusBarId )
@@ -28,8 +46,6 @@ class TetrisActivity: Activity() {
         gameView = GameView( this, width, height - statusBarHeight )
         game = gameView.getGame()
 
-
-        setContentView(R.layout.activity_tetris)
 
         var th : TouchHandler = TouchHandler()
         detector = GestureDetector( this, th )
