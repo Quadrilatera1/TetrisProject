@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -33,8 +34,8 @@ class TetrisActivity: Activity() {
 
         this.board = findViewById(R.id.board)
 
-        var tv = TextView(this)
-        tv.text = "This is a textview"
+        var tv = Button(this)
+        tv.background = ContextCompat.getDrawable(this, R.drawable.block)
 
         board.addView(tv)
 
