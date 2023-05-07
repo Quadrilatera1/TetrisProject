@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.GestureDetector
@@ -29,29 +30,27 @@ class TetrisActivity: Activity() {
         var width : Int = Resources.getSystem( ).displayMetrics.widthPixels
         var height : Int = Resources.getSystem( ).displayMetrics.heightPixels
 
-
         setContentView(R.layout.activity_tetris)
-
 
         this.board = findViewById(R.id.board)
 
         this.boxes = Array(24, {i->Array<Button>(11, {j->Button(this)})})
         for (i in 0..boxes.size-1) {
             for (j in 0..boxes[i].size-1) {
-                boxes[i][j].background = ContextCompat.getDrawable(this, R.drawable.block)
+                boxes[i][j].background = ColorDrawable(Color.WHITE)
                 board.addView(boxes[i][j], 57, 57)
             }
         }
-
 
         var statusBarId : Int = resources.getIdentifier(
             "status_bar_height", "dimen", "android" )
         var statusBarHeight : Int = resources.getDimensionPixelSize( statusBarId )
 
-        gameView = GameView( this, width, height - statusBarHeight )
+        gameView = GameView( this, width, height - statusBarHeight, boxes)
         game = gameView.getGame()
 
         game.boxes = this.boxes
+        game.setGameActivity(this)
 
 
         var th : TouchHandler = TouchHandler()
@@ -60,10 +59,9 @@ class TetrisActivity: Activity() {
 
         game.spawnShape()
 
-        updateView()
 
-        //var gameTimer : Timer = Timer( )
-        //gameTimer.schedule( GameTimerTask( this ), 0, 0L + GameView.DELTA_TIME)
+        var gameTimer : Timer = Timer( )
+        gameTimer.schedule( GameTimerTask( this ), 0, 0L + 1500)
 
     }
     fun goBack( v : View) {
@@ -71,20 +69,19 @@ class TetrisActivity: Activity() {
         finish( )
     }
     fun updateView() {
-        var a = game.currShape.A
-        var b = game.currShape.B
-        var c = game.currShape.C
-        var d = game.currShape.D
 
-        boxes[a.x][a.y].background = ContextCompat.getDrawable(this, R.drawable.blue)
-
+        gameView.updateGrid()
 
     }
+
+
     fun updateModel() {
 
-        if (game.rowIsFull()) {
-            game.clearRow()
+        if (game.currShape == null) {
+            game.spawnShape()
         }
+
+        game.moveShapeDown()
 
     }
 
