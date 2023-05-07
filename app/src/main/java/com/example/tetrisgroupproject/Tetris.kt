@@ -55,6 +55,31 @@ class Tetris {
         this.currShape = IBlock(0, 5)
     }
 
+    fun validSpawn():Boolean {
+        if (boolGrid[currShape.A.x][currShape.A.y] == false
+            && boolGrid[currShape.B.x][currShape.B.y] == false
+            && boolGrid[currShape.C.x][currShape.C.y] == false
+            && boolGrid[currShape.D.x][currShape.D.y] == false) {
+            return true
+        }
+        return false
+    }
+
+    fun placementValid():Boolean {
+        var A = currShape.A
+        var B = currShape.B
+        var C = currShape.C
+        var D = currShape.D
+
+        if (A.x < 0 || A.x < 0 || A.x < 0 || A.x < 0) {
+            return false
+        }
+        return true
+
+
+
+    }
+
     fun moveShapeDown() {
 
         this.currShape.moveDown()
@@ -62,10 +87,18 @@ class Tetris {
     }
 
     fun moveShapeLeft() {
+        //Calculate a projection of the shape's next movement using its coordinates
+        //If the projection is outside the bounds of the grid, or it would
+        //move into any blocks marked true then don't move
+        //otherwise
         currShape.moveLeft()
     }
 
     fun moveShapeRight() {
+        //Calculate a projection of the shape's next movement using its coordinates
+        //If the projection is outside the bounds of the grid, or it would
+        //move into any blocks marked true then don't move
+        //otherwise
         currShape.moveRight()
     }
 
@@ -75,22 +108,83 @@ class Tetris {
     }
 
     fun blockShouldStop():Boolean {
+        var nextA = currShape.A
+        var nextB = currShape.B
+        var nextC = currShape.C
+        var nextD = currShape.D
+
+        if (nextA.x+1 == 24 || nextB.x+1 == 24 || nextC.x+1 == 24 || nextD.x+1 == 24) {
+            return true
+        }
+        if (boolGrid[nextA.x+1][nextA.y] || boolGrid[nextB.x+1][nextB.y] || boolGrid[nextC.x+1][nextC.y] || boolGrid[nextD.x+1][nextD.y]) {
+            return true
+        }
         return false
+
+    }
+
+    fun pastTop():Boolean {
+
+        var nextA = currShape.A
+        var nextB = currShape.B
+        var nextC = currShape.C
+        var nextD = currShape.D
+
+        if (nextA.x < 0 || nextB.x < 0 || nextC.x < 0 || nextD.x < 0) {
+            return true
+        }
+        return false
+
     }
 
     fun setBlockRestingPlace() {
 
+        var A = currShape.A
+        var B = currShape.B
+        var C = currShape.C
+        var D = currShape.D
+
+        this.boolGrid[A.x][A.y] = true
+        this.boolGrid[B.x][B.y] = true
+        this.boolGrid[C.x][C.y] = true
+        this.boolGrid[D.x][D.y] = true
+
+
     }
 
-    fun rowIsFull() : Boolean {
-        return false
+    fun rowIsFull(rowIndex: Int) : Boolean {
+        for (j in 0..this.boolGrid[rowIndex].size-1) {
+            if (this.boolGrid[rowIndex][j] == false) {
+                return false
+            }
+        }
+        return true
     }
 
-    fun clearRow() {
+    fun clearRow(rowIndex: Int) {
+
+        for (j in 0..boolGrid[rowIndex].size-1) {
+            this.boolGrid[rowIndex][j] = false
+        }
 
     }
 
-    fun moveAboveRowsDown() {
+    fun moveAboveRowsDown(start: Int) {
+
+        if (start == 0) {
+            return
+        }
+
+        for (i in start..boolGrid.size-1) {
+            for (j in 0..boolGrid[start].size-1) {
+                if (boolGrid[i-1][j] == true) {
+                    var color = boxes[i-1][j].background
+                    boxes[i][j].background = color
+                    boolGrid[i][j] = true
+                    boolGrid[i-1][j] = false
+                }
+            }
+        }
 
     }
 

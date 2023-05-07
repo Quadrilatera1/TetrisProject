@@ -57,7 +57,6 @@ class GameView : View  {
         }
         if (game.currShape is TBlock) {
             drawTBlock()
-
         }
         if (game.currShape is ZBlock) {
             drawZBlock()
@@ -69,7 +68,6 @@ class GameView : View  {
         var B = game.currShape.B
         var C = game.currShape.C
         var D = game.currShape.D
-
 
         boxes[A.x][A.y].background = ColorDrawable(Color.CYAN)
         boxes[B.x][B.y].background = ColorDrawable(Color.CYAN)

@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
@@ -57,8 +58,8 @@ class TetrisActivity: Activity() {
         detector = GestureDetector( this, th )
         detector.setOnDoubleTapListener( th )
 
-        game.spawnShape()
 
+        game.spawnShape()
 
         var gameTimer : Timer = Timer( )
         gameTimer.schedule( GameTimerTask( this ), 0, 0L + 1500)
@@ -69,20 +70,38 @@ class TetrisActivity: Activity() {
         finish( )
     }
     fun updateView() {
-
         gameView.updateGrid()
-
     }
 
 
     fun updateModel() {
 
-        if (game.currShape == null) {
-            game.spawnShape()
+
+        if (game.validSpawn() == false) {
+            Log.i("UpdateModel", "No spawn position available: game should end")
+        }
+
+        if (game.blockShouldStop()) {
+            if (game.placementValid()) {
+                game.setBlockRestingPlace()
+                game.spawnShape()
+            } else {
+                Log.i("UpdateModel", "Bad placement: game should end")
+            }
+        }
+
+        for (i in 0..game.boolGrid.size-1) {
+            if (game.rowIsFull(i)) {
+                game.clearRow(i)
+                game.moveAboveRowsDown(i)
+            }
+        }
+
+        if (game.pastTop()) {
+            Log.i("updateModel", "The game should end")
         }
 
         game.moveShapeDown()
-
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
