@@ -8,9 +8,10 @@ import android.widget.Button
 import android.widget.GridLayout
 import java.util.*
 import kotlin.math.*
+import kotlin.random.*
 
 class Tetris {
-    private var random: Random? = null
+
     private var score: Int = 0
     private var highScore: Int = 0
     private var gameOver : Boolean = false
@@ -26,7 +27,7 @@ class Tetris {
 
 
     constructor(context: Context, boxes:Array<Array<Button>>){
-        random = Random()
+
         var pref : SharedPreferences =
             context!!.getSharedPreferences( context.packageName +
                     "_preferences", Context.MODE_PRIVATE )
@@ -52,7 +53,24 @@ class Tetris {
         //This will randomly generate a piece eventually
         //For testing purposes, it just makes a single IBlock
         //All shapes' initial coordinates should be (0, 5)
-        this.currShape = IBlock(0, 5)
+        var random = (0..6).random()
+
+        if (random == 0) {
+            this.currShape = IBlock(1, 5)
+        } else if (random == 1) {
+            this.currShape = JBlock(0,5)
+        } else if (random == 2) {
+            this.currShape = LBlock(0,5)
+        } else if (random == 3) {
+            this.currShape = OBlock(0,5)
+        } else if (random == 4) {
+            this.currShape = SBlock(0,5)
+        } else if (random == 5) {
+            this.currShape = TBlock(0,5)
+        } else if (random == 6) {
+            this.currShape = ZBlock(0,5)
+        }
+
     }
 
     fun validSpawn():Boolean {
@@ -76,14 +94,25 @@ class Tetris {
         }
         return true
 
-
-
     }
 
     fun moveShapeDown() {
-
         this.currShape.moveDown()
+    }
 
+    fun canMoveLeft():Boolean {
+        var A = currShape.A
+        var B = currShape.B
+        var C = currShape.C
+        var D = currShape.D
+
+        if (A.y-1 < 0 || B.y-1 < 0 || C.y-1 < 0 || D.y-11 < 0) {
+            return false
+        }
+        if (boolGrid[A.x][A.y-1] || boolGrid[B.x][B.y-1] || boolGrid[C.x][C.y-1] || boolGrid[D.x][D.y-1]) {
+            return false
+        }
+        return true
     }
 
     fun moveShapeLeft() {
@@ -91,7 +120,26 @@ class Tetris {
         //If the projection is outside the bounds of the grid, or it would
         //move into any blocks marked true then don't move
         //otherwise
-        currShape.moveLeft()
+        if (this.canMoveLeft()) {
+            currShape.moveLeft()
+        }
+    }
+
+    fun canMoveRight():Boolean {
+
+        var A = currShape.A
+        var B = currShape.B
+        var C = currShape.C
+        var D = currShape.D
+
+        if (A.y+1 >= 24 || B.y+1 >= 24 || C.y+1 >= 24 || D.y+1 >= 24) {
+            return false
+        }
+        if (boolGrid[A.x][A.y+1] || boolGrid[B.x][B.y+1] || boolGrid[C.x][C.y+1] || boolGrid[D.x][D.y+1]) {
+            return false
+        }
+        return true
+
     }
 
     fun moveShapeRight() {
@@ -99,12 +147,17 @@ class Tetris {
         //If the projection is outside the bounds of the grid, or it would
         //move into any blocks marked true then don't move
         //otherwise
-        currShape.moveRight()
+        if (this.canMoveRight()) {
+            currShape.moveRight()
+        }
     }
 
     fun rotateShape() {
         //Calculate a projection of the shape's rotation using its coordinates
         //If the projection is entirely within the grid, then call currShape.rotate()
+        if (currShape.canRotate(boolGrid)) {
+            currShape.rotate()
+        }
     }
 
     fun blockShouldStop():Boolean {

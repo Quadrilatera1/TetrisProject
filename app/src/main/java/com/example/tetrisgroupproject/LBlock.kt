@@ -1,8 +1,19 @@
 package com.example.tetrisgroupproject
 
 class LBlock(x:Int, y:Int):Block(x,y) {
+    private var state:Int
+    init {
+        B = BoardPoint(x-1, y)
+        C = BoardPoint(x+1, y)
+        D = BoardPoint(x+1, y+1)
+        state = 0
+    }
+
     override fun moveDown() {
-        TODO("Not yet implemented")
+        this.A.x = this.A.x + 1
+        this.B.x = this.B.x + 1
+        this.C.x = this.C.x + 1
+        this.D.x = this.D.x + 1
     }
 
     override fun moveLeft() {
@@ -15,5 +26,9 @@ class LBlock(x:Int, y:Int):Block(x,y) {
 
     override fun rotate() {
         TODO("Not yet implemented")
+    }
+
+    override fun canRotate(boolGrid: Array<Array<Boolean>>): Boolean {
+        return true
     }
 }

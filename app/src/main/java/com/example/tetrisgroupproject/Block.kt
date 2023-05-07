@@ -11,6 +11,7 @@ public abstract class Block(var x:Int, var y:Int) {
     abstract fun moveLeft()
     abstract fun moveRight()
     abstract fun rotate()
+    abstract fun canRotate(boolGrid:Array<Array<Boolean>>):Boolean
 
 
 
