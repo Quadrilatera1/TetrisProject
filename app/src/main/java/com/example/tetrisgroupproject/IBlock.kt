@@ -19,11 +19,17 @@ class IBlock(x:Int, y:Int):Block(x,y) {
     }
 
     override fun moveLeft() {
-        TODO("Not yet implemented")
+        this.A.y = this.A.y-1
+        this.B.y = this.B.y-1
+        this.C.y = this.C.y-1
+        this.D.y = this.D.y-1
     }
 
     override fun moveRight() {
-        TODO("Not yet implemented")
+        this.A.y = this.A.y+1
+        this.B.y = this.B.y+1
+        this.C.y = this.C.y+1
+        this.D.y = this.D.y+1
     }
 
     override fun rotate() {
@@ -54,7 +60,7 @@ class IBlock(x:Int, y:Int):Block(x,y) {
             var newCY = this.A.y+1
             var newDY = this.A.y+2
 
-            if (newBY < 0 || newCY > 23 || newDY > 23) {
+            if (newBY < 0 || newCY > 11 || newDY > 11) {
                 return false
             }
 

@@ -132,7 +132,7 @@ class Tetris {
         var C = currShape.C
         var D = currShape.D
 
-        if (A.y+1 >= 24 || B.y+1 >= 24 || C.y+1 >= 24 || D.y+1 >= 24) {
+        if (A.y+1 >= 12 || B.y+1 >= 12 || C.y+1 >= 12 || D.y+1 >= 12) {
             return false
         }
         if (boolGrid[A.x][A.y+1] || boolGrid[B.x][B.y+1] || boolGrid[C.x][C.y+1] || boolGrid[D.x][D.y+1]) {

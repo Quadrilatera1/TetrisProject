@@ -16,11 +16,17 @@ class OBlock(x:Int, y:Int):Block(x,y) {
     }
 
     override fun moveLeft() {
-        TODO("Not yet implemented")
+        this.A.y = this.A.y-1
+        this.B.y = this.B.y-1
+        this.C.y = this.C.y-1
+        this.D.y = this.D.y-1
     }
 
     override fun moveRight() {
-        TODO("Not yet implemented")
+        this.A.y = this.A.y+1
+        this.B.y = this.B.y+1
+        this.C.y = this.C.y+1
+        this.D.y = this.D.y+1
     }
 
     override fun rotate() {
@@ -28,6 +34,6 @@ class OBlock(x:Int, y:Int):Block(x,y) {
     }
 
     override fun canRotate(boolGrid: Array<Array<Boolean>>): Boolean {
-        return true
+        return false
     }
 }
