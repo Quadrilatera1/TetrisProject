@@ -3,6 +3,8 @@ package com.example.tetrisgroupproject
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
+import android.graphics.Point
+import android.widget.Button
 import android.widget.GridLayout
 import java.util.*
 import kotlin.math.*
@@ -14,6 +16,8 @@ class Tetris {
     private var gameOver : Boolean = false
     private lateinit var editor : SharedPreferences.Editor
     private lateinit var pref: SharedPreferences
+    lateinit var boxes:Array<Array<Button>>
+    lateinit var currShape:Block
 
     val LINES = 22
     val COLUMNS = 12
@@ -33,8 +37,11 @@ class Tetris {
         return highScore
     }
 
-    fun moveShapeDown() {
+    fun spawnShape() {
+        this.currShape = IBlock(0, 5)
+    }
 
+    fun moveShapeDown() {
 
     }
 

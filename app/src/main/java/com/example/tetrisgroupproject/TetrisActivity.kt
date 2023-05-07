@@ -20,6 +20,7 @@ class TetrisActivity: Activity() {
     private lateinit var game : Tetris
     private lateinit var detector : GestureDetector
     private lateinit var board : GridLayout
+    private lateinit var boxes:Array<Array<Button>>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,10 +35,13 @@ class TetrisActivity: Activity() {
 
         this.board = findViewById(R.id.board)
 
-        var tv = Button(this)
-        tv.background = ContextCompat.getDrawable(this, R.drawable.block)
-
-        board.addView(tv)
+        this.boxes = Array(24, {i->Array<Button>(11, {j->Button(this)})})
+        for (i in 0..boxes.size-1) {
+            for (j in 0..boxes[i].size-1) {
+                boxes[i][j].background = ContextCompat.getDrawable(this, R.drawable.block)
+                board.addView(boxes[i][j], 57, 57)
+            }
+        }
 
 
         var statusBarId : Int = resources.getIdentifier(
@@ -47,10 +51,16 @@ class TetrisActivity: Activity() {
         gameView = GameView( this, width, height - statusBarHeight )
         game = gameView.getGame()
 
+        game.boxes = this.boxes
+
 
         var th : TouchHandler = TouchHandler()
         detector = GestureDetector( this, th )
         detector.setOnDoubleTapListener( th )
+
+        game.spawnShape()
+
+        updateView()
 
         //var gameTimer : Timer = Timer( )
         //gameTimer.schedule( GameTimerTask( this ), 0, 0L + GameView.DELTA_TIME)
@@ -60,8 +70,15 @@ class TetrisActivity: Activity() {
         // go back
         finish( )
     }
-    fun updateView( ) {
-        gameView.postInvalidate()
+    fun updateView() {
+        var a = game.currShape.A
+        var b = game.currShape.B
+        var c = game.currShape.C
+        var d = game.currShape.D
+
+        boxes[a.x][a.y].background = ContextCompat.getDrawable(this, R.drawable.blue)
+
+
     }
     fun updateModel() {
 
