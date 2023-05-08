@@ -3,6 +3,7 @@ package com.example.tetrisgroupproject
 class TBlock(x:Int, y:Int):Block(x,y) {
 
     private var state:Int
+
     init {
         B = BoardPoint(x, y-1)
         C = BoardPoint(x+1, y)
@@ -68,7 +69,7 @@ class TBlock(x:Int, y:Int):Block(x,y) {
             var nextCX = A.x
             var nextCY = A.y+1
 
-            if (nextCY > 11 || boolGrid[nextCX][nextCY] == true) {
+            if (nextCY > 10 || boolGrid[nextCX][nextCY] == true) {
                 return false
             }
         } else if (state == 2) {
@@ -87,7 +88,7 @@ class TBlock(x:Int, y:Int):Block(x,y) {
             var nextDX = A.x
             var nextDY = A.y+1
 
-            if (nextBY < 0 || nextCX > 23 || nextDY > 11) {
+            if (nextBY < 0 || nextCX > 23 || nextDY > 10) {
                 return false
             }
 

@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.widget.Button
 import android.widget.GridLayout
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 
 class GameView : View  {
@@ -16,14 +17,16 @@ class GameView : View  {
     private var gameWidth : Float = 0.0f
     private lateinit var game : Tetris
     private lateinit var boxes:Array<Array<Button>>
+    lateinit var scoreBox:TextView
 
 
-    constructor(context : Context, width : Int, height : Int, boxes:Array<Array<Button>>) : super(context) {
+    constructor(context : Context, width : Int, height : Int, boxes:Array<Array<Button>>, scoreBox:TextView) : super(context) {
 
         game = Tetris(context, boxes)
         gameHeight = height.toFloat()
         gameWidth = width.toFloat()
 
+        this.scoreBox = scoreBox
         this.boxes = boxes
 
     }
@@ -31,6 +34,8 @@ class GameView : View  {
         return game
     }
     fun updateGrid() {
+
+        scoreBox.text = game.score.toString()
 
         for (i in 0..game.boolGrid.size-1) {
             for (j in 0..game.boolGrid[i].size-1) {

@@ -25,6 +25,12 @@ class TetrisActivity: Activity() {
     private lateinit var boxes:Array<Array<Button>>
     private var delta = 1500
     private lateinit var gameTimer: Timer
+    private lateinit var leftButton:Button
+    private lateinit var rightButton:Button
+    private lateinit var downButton:Button
+    private lateinit var rotateButton:Button
+    private lateinit var scoreBox:TextView
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +42,7 @@ class TetrisActivity: Activity() {
         setContentView(R.layout.activity_tetris)
 
         this.board = findViewById(R.id.board)
+        this.scoreBox = findViewById(R.id.scoreBox)
 
         this.boxes = Array(24, {i->Array<Button>(11, {j->Button(this)})})
         for (i in 0..boxes.size-1) {
@@ -45,15 +52,39 @@ class TetrisActivity: Activity() {
             }
         }
 
+
+
         var statusBarId : Int = resources.getIdentifier(
             "status_bar_height", "dimen", "android" )
         var statusBarHeight : Int = resources.getDimensionPixelSize( statusBarId )
 
-        gameView = GameView( this, width, height - statusBarHeight, boxes)
+        gameView = GameView( this, width, height - statusBarHeight, boxes, this.scoreBox)
         game = gameView.getGame()
 
         game.boxes = this.boxes
         game.setGameActivity(this)
+
+        leftButton = findViewById<Button>(R.id.left)
+        rightButton = findViewById<Button>(R.id.right)
+        downButton = findViewById<Button>(R.id.down)
+        rotateButton = findViewById<Button>(R.id.rotate)
+
+        leftButton.setOnClickListener {
+            goLeft()
+        }
+
+        rightButton.setOnClickListener {
+            goRight()
+        }
+
+        rotateButton.setOnClickListener {
+            goRotate()
+        }
+
+        downButton.setOnClickListener {
+            goDown()
+        }
+
 
 
         var th : TouchHandler = TouchHandler()
@@ -83,9 +114,11 @@ class TetrisActivity: Activity() {
             Log.i("UpdateModel", "No spawn position available: game should end")
         }
 
+        updateSpeed()
 
         if (game.blockShouldStop()) {
             if (game.placementValid()) {
+                game.currShape.falling = false
                 game.setBlockRestingPlace()
                 game.score += 10
                 game.spawnShape()
@@ -152,6 +185,27 @@ class TetrisActivity: Activity() {
             this.gameTimer = Timer()
             this.gameTimer.schedule(GameTimerTask(this), 0, 0L + this.delta)
 
+        }
+    }
+
+    fun goLeft() {
+        game.moveShapeLeft()
+        gameView.updateGrid()
+    }
+    fun goRight() {
+        game.moveShapeRight()
+        gameView.updateGrid()
+    }
+
+    fun goRotate() {
+        game.rotateShape()
+        gameView.updateGrid()
+    }
+
+    fun goDown() {
+        if (game.blockShouldStop() == false) {
+            game.moveShapeDown()
+            gameView.updateGrid()
         }
     }
 

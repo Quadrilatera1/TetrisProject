@@ -9,6 +9,7 @@ class IBlock(x:Int, y:Int):Block(x,y) {
         C = BoardPoint(x+1, y)
         D = BoardPoint(x+2, y)
         state = 0
+
     }
 
     override fun moveDown() {
@@ -60,7 +61,7 @@ class IBlock(x:Int, y:Int):Block(x,y) {
             var newCY = this.A.y+1
             var newDY = this.A.y+2
 
-            if (newBY < 0 || newCY > 11 || newDY > 11) {
+            if (newBY < 0 || newCY > 10 || newDY > 10) {
                 return false
             }
 

@@ -3,12 +3,16 @@ package com.example.tetrisgroupproject
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
+import android.graphics.Color
 import android.graphics.Point
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.widget.Button
 import android.widget.GridLayout
 import java.util.*
 import kotlin.math.*
 import kotlin.random.*
+import android.util.Log
 
 class Tetris {
 
@@ -21,6 +25,7 @@ class Tetris {
     lateinit var boolGrid:Array<Array<Boolean>>
     lateinit var currShape:Block
     lateinit var activity: TetrisActivity
+
 
     val LINES = 22
     val COLUMNS = 12
@@ -106,11 +111,20 @@ class Tetris {
         var C = currShape.C
         var D = currShape.D
 
-        if (A.y-1 < 0 || B.y-1 < 0 || C.y-1 < 0 || D.y-11 < 0) {
+        if (currShape.falling == false) {
+            return false
+        }
+
+        if (A.y-1 < 0 || B.y-1 < 0 || C.y-1 < 0 || D.y-1 < 0) {
+            Log.w("canMoveLeft", "False")
+
             return false
         }
         if (boolGrid[A.x][A.y-1] || boolGrid[B.x][B.y-1] || boolGrid[C.x][C.y-1] || boolGrid[D.x][D.y-1]) {
+            Log.w("canMoveLeft", "False")
+
             return false
+
         }
         return true
     }
@@ -132,7 +146,11 @@ class Tetris {
         var C = currShape.C
         var D = currShape.D
 
-        if (A.y+1 >= 12 || B.y+1 >= 12 || C.y+1 >= 12 || D.y+1 >= 12) {
+        if (currShape.falling == false) {
+            return false
+        }
+
+        if (A.y+1 > 10 || B.y+1 > 10 || C.y+1 > 10 || D.y+1 > 10) {
             return false
         }
         if (boolGrid[A.x][A.y+1] || boolGrid[B.x][B.y+1] || boolGrid[C.x][C.y+1] || boolGrid[D.x][D.y+1]) {
@@ -155,7 +173,7 @@ class Tetris {
     fun rotateShape() {
         //Calculate a projection of the shape's rotation using its coordinates
         //If the projection is entirely within the grid, then call currShape.rotate()
-        if (currShape.canRotate(boolGrid)) {
+        if (currShape.canRotate(boolGrid) && currShape.falling) {
             currShape.rotate()
         }
     }
@@ -225,18 +243,28 @@ class Tetris {
     fun moveAboveRowsDown(start: Int) {
 
         if (start == 0) {
-            return
-        }
+            for(j in start..boolGrid[start].size-1) {
+                boolGrid[start][j] = false
+            }
 
-        for (i in start..boolGrid.size-1) {
-            for (j in 0..boolGrid[start].size-1) {
-                if (boolGrid[i-1][j] == true) {
-                    var color = boxes[i-1][j].background
+        } else {
+
+            for (i in start downTo 1) {
+                for (j in 0 until boolGrid[0].size) {
+                    var color:Drawable = boxes[i-1][j].background
+                    var truthValue = boolGrid[i-1][j]
                     boxes[i][j].background = color
-                    boolGrid[i][j] = true
-                    boolGrid[i-1][j] = false
+                    boolGrid[i][j] = truthValue
+
                 }
             }
+
+            for (j in 0 until boolGrid[0].size) {
+                boolGrid[0][j] = false
+
+            }
+
+
         }
 
     }

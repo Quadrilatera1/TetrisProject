@@ -7,6 +7,7 @@ class LBlock(x:Int, y:Int):Block(x,y) {
         C = BoardPoint(x+1, y)
         D = BoardPoint(x+1, y+1)
         state = 0
+
     }
 
     override fun moveDown() {
@@ -78,7 +79,7 @@ class LBlock(x:Int, y:Int):Block(x,y) {
             var nextDX = A.x+1
             var nextDY = A.y-1
 
-            if (nextBY > 11 || nextCY < 0 || nextDX > 23 || nextDY > 11) {
+            if (nextBY > 10 || nextCY < 0 || nextDX > 23 || nextDY > 10) {
                 return false
             }
             if (boolGrid[nextBX][nextBY] || boolGrid[nextCX][nextCY] || boolGrid[nextDX][nextDY]) {
@@ -107,7 +108,7 @@ class LBlock(x:Int, y:Int):Block(x,y) {
             var nextDX = A.x+1
             var nextDY = A.y+1
 
-            if (nextBY < 0 || nextCY > 11 || nextDX > 23 || nextDY > 11) {
+            if (nextBY < 0 || nextCY > 10 || nextDX > 23 || nextDY > 10) {
                 return false
             }
             if (boolGrid[nextBX][nextBY] || boolGrid[nextCX][nextCY] || boolGrid[nextDX][nextDY]) {
@@ -121,7 +122,7 @@ class LBlock(x:Int, y:Int):Block(x,y) {
             var nextDX = A.x+1
             var nextDY = A.y+1
 
-            if (nextBX < 0 || nextCX > 23 || nextDX > 23 || nextDY > 11) {
+            if (nextBX < 0 || nextCX > 23 || nextDX > 23 || nextDY > 10) {
                 return false
             }
             if (boolGrid[nextBX][nextBY] || boolGrid[nextCX][nextCY] || boolGrid[nextDX][nextDY]) {

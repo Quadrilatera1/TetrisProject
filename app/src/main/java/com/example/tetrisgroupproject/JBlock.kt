@@ -81,7 +81,7 @@ class JBlock(x:Int, y:Int):Block(x,y) {
             var nextDX = A.x - 1
             var nextDY = A.y - 1
 
-            if (nextBY > 11 || nextCY < 0 || nextDX < 0 || nextDY < 0) {
+            if (nextBY > 10 || nextCY < 0 || nextDX < 0 || nextDY < 0) {
                 return false
             }
             if (boolGrid[nextBX][nextBY] || boolGrid[nextCX][nextCY] || boolGrid[nextDX][nextDY]) {
@@ -96,7 +96,7 @@ class JBlock(x:Int, y:Int):Block(x,y) {
             var nextDX = A.x-1
             var nextDY = A.y+1
 
-            if (nextBY > 23 || nextCX < 0 || nextDX < 0 || nextDY > 11) {
+            if (nextBY > 23 || nextCX < 0 || nextDX < 0 || nextDY > 10) {
                 return false
             }
             if (boolGrid[nextBX][nextBY] || boolGrid[nextCX][nextCY] || boolGrid[nextDX][nextDY]) {
@@ -112,7 +112,7 @@ class JBlock(x:Int, y:Int):Block(x,y) {
             var nextDX = A.x+1
             var nextDY = A.y+1
 
-            if (nextBX < 0 || nextCY > 11 || nextDX > 23 || nextDY > 11) {
+            if (nextBX < 0 || nextCY > 10 || nextDX > 23 || nextDY > 10) {
                 return false
             }
             if (boolGrid[nextBX][nextBY] || boolGrid[nextCX][nextCY] || boolGrid[nextDX][nextDY]) {

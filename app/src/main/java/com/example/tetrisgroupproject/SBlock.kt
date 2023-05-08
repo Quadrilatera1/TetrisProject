@@ -2,6 +2,7 @@ package com.example.tetrisgroupproject
 
 class SBlock(x:Int, y:Int):Block(x,y) {
     private var state:Int
+
     init {
         B = BoardPoint(x-1, y)
         C = BoardPoint(x-1, y+1)
@@ -81,7 +82,7 @@ class SBlock(x:Int, y:Int):Block(x,y) {
             var nextDX = A.x-1
             var nextDY = A.y
 
-            if (nextBY > 11 || nextCX > 23 || nextCY > 11 || nextDX < 0) {
+            if (nextBY > 10 || nextCX > 23 || nextCY > 10 || nextDX < 0) {
                 return false
             }
             if (boolGrid[nextBX][nextBY] || boolGrid[nextCX][nextCY] || boolGrid[nextDX][nextDY]) {
@@ -96,7 +97,7 @@ class SBlock(x:Int, y:Int):Block(x,y) {
             var nextDX = A.x
             var nextDY = A.y+1
 
-            if (nextBX > 11 || nextCX > 11 || nextCY > 23 || nextDY > 11) {
+            if (nextBX > 10 || nextCX > 10 || nextCY > 23 || nextDY > 10) {
                 return false
             }
             if (boolGrid[nextBX][nextBY] || boolGrid[nextCX][nextCY] || boolGrid[nextDX][nextDY]) {
@@ -124,7 +125,7 @@ class SBlock(x:Int, y:Int):Block(x,y) {
             var nextDX = A.x
             var nextDY = A.y-1
 
-            if (nextBX < 0 || nextCX < 0 || nextCY > 11 || nextDY < 0) {
+            if (nextBX < 0 || nextCX < 0 || nextCY > 10 || nextDY < 0) {
                 return false
             }
             if (boolGrid[nextBX][nextBY] || boolGrid[nextCX][nextCY] || boolGrid[nextDX][nextDY]) {
