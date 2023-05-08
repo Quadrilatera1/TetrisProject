@@ -35,12 +35,15 @@ class TBlock(x:Int, y:Int):Block(x,y) {
         if (state == 0) {
             D.x = A.x-1
             D.y = A.y
+            state = 1
         } else if (state == 1) {
             C.x = A.x
             C.y = A.y+1
+            state = 2
         } else if (state == 2) {
             B.x = A.x+1
             B.y = A.y
+            state = 3
         } else if (state == 3) {
             B.x = A.x
             B.y = A.y-1
@@ -48,6 +51,7 @@ class TBlock(x:Int, y:Int):Block(x,y) {
             C.y = A.y
             D.x = A.x
             D.y = A.y+1
+            state = 0
         }
     }
 

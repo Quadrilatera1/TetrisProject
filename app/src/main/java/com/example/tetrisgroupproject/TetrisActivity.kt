@@ -23,6 +23,8 @@ class TetrisActivity: Activity() {
     private lateinit var detector : GestureDetector
     private lateinit var board : GridLayout
     private lateinit var boxes:Array<Array<Button>>
+    private var delta = 1500
+    private lateinit var gameTimer: Timer
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,8 +63,8 @@ class TetrisActivity: Activity() {
 
         game.spawnShape()
 
-        var gameTimer : Timer = Timer( )
-        gameTimer.schedule( GameTimerTask( this ), 0, 0L + 1500)
+        this.gameTimer = Timer( )
+        gameTimer.schedule( GameTimerTask( this ), 0, 0L + this.delta)
 
     }
     fun goBack( v : View) {
@@ -81,9 +83,11 @@ class TetrisActivity: Activity() {
             Log.i("UpdateModel", "No spawn position available: game should end")
         }
 
+
         if (game.blockShouldStop()) {
             if (game.placementValid()) {
                 game.setBlockRestingPlace()
+                game.score += 10
                 game.spawnShape()
             } else {
                 Log.i("UpdateModel", "Bad placement: game should end")
@@ -93,6 +97,7 @@ class TetrisActivity: Activity() {
         for (i in 0..game.boolGrid.size-1) {
             if (game.rowIsFull(i)) {
                 game.clearRow(i)
+                game.score += 50
                 game.moveAboveRowsDown(i)
             }
         }
@@ -102,6 +107,52 @@ class TetrisActivity: Activity() {
         }
 
         game.moveShapeDown()
+    }
+
+    fun updateSpeed() {
+        if (game.score >= 500 && game.score < 1000 && this.delta == 1500) {
+
+            this.delta = 1200
+            this.gameTimer.cancel()
+            this.gameTimer.purge()
+            this.gameTimer = Timer()
+            this.gameTimer.schedule(GameTimerTask(this), 0, 0L + this.delta)
+
+        }
+        if (game.score >= 1000 && game.score < 1500 && this.delta == 1200) {
+
+            this.delta = 900
+            this.gameTimer.cancel()
+            this.gameTimer.purge()
+            this.gameTimer = Timer()
+            this.gameTimer.schedule(GameTimerTask(this), 0, 0L + this.delta)
+
+        }
+        if (game.score >= 1500 && game.score < 2000 && this.delta == 900) {
+            this.delta = 500
+            this.gameTimer.cancel()
+            this.gameTimer.purge()
+            this.gameTimer = Timer()
+            this.gameTimer.schedule(GameTimerTask(this), 0, 0L + this.delta)
+
+        }
+        if (game.score >= 2000 && game.score < 2500 && this.delta == 500) {
+            this.delta = 200
+            this.gameTimer.cancel()
+            this.gameTimer.purge()
+            this.gameTimer = Timer()
+            this.gameTimer.schedule(GameTimerTask(this), 0, 0L + this.delta)
+
+        }
+
+        if (game.score >= 2500 && this.delta == 200) {
+            this.delta = 50
+            this.gameTimer.cancel()
+            this.gameTimer.purge()
+            this.gameTimer = Timer()
+            this.gameTimer.schedule(GameTimerTask(this), 0, 0L + this.delta)
+
+        }
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -120,6 +171,10 @@ class TetrisActivity: Activity() {
             distanceY: Float
         ): Boolean {
             return super.onScroll(e1, e2, distanceX, distanceY)
+        }
+
+        override fun onLongPress(e: MotionEvent) {
+            super.onLongPress(e)
         }
 
     }

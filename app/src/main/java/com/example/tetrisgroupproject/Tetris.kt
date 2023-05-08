@@ -12,7 +12,7 @@ import kotlin.random.*
 
 class Tetris {
 
-    private var score: Int = 0
+    var score: Int = 0
     private var highScore: Int = 0
     private var gameOver : Boolean = false
     private lateinit var editor : SharedPreferences.Editor
@@ -58,17 +58,17 @@ class Tetris {
         if (random == 0) {
             this.currShape = IBlock(1, 5)
         } else if (random == 1) {
-            this.currShape = JBlock(0,5)
+            this.currShape = JBlock(1,5)
         } else if (random == 2) {
-            this.currShape = LBlock(0,5)
+            this.currShape = LBlock(1,5)
         } else if (random == 3) {
-            this.currShape = OBlock(0,5)
+            this.currShape = OBlock(1,5)
         } else if (random == 4) {
-            this.currShape = SBlock(0,5)
+            this.currShape = SBlock(1,5)
         } else if (random == 5) {
-            this.currShape = TBlock(0,5)
+            this.currShape = TBlock(1,5)
         } else if (random == 6) {
-            this.currShape = ZBlock(0,5)
+            this.currShape = ZBlock(1,5)
         }
 
     }
