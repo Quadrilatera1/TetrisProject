@@ -19,7 +19,7 @@ class Tetris {
     var score: Int = 0
     private var highScore: Int = 0
     private var gameOver : Boolean = false
-    private lateinit var editor : SharedPreferences.Editor
+    private lateinit var e : SharedPreferences.Editor
     private lateinit var pref: SharedPreferences
     lateinit var boxes:Array<Array<Button>>
     lateinit var boolGrid:Array<Array<Boolean>>
@@ -33,10 +33,21 @@ class Tetris {
 
     constructor(context: Context, boxes:Array<Array<Button>>){
 
-        var pref : SharedPreferences =
-            context!!.getSharedPreferences( context.packageName +
-                    "_preferences", Context.MODE_PRIVATE )
-        setHighScore(pref.getInt(HIGH_SCORE, 0))
+        this.pref = context!!.getSharedPreferences( context.packageName + "_preferences", Context.MODE_PRIVATE )
+
+        this.e = pref.edit()
+
+        var firstRun = pref.getBoolean("firstRun", true)
+
+        if (firstRun) {
+            this.highScore = 0
+            this.e.putBoolean("firstRun", false)
+            this.e.putInt("highScore", this.highScore)
+            this.e.commit()
+            this.highScore = 0
+        } else {
+            this.highScore = this.pref.getInt("highScore", 0)
+        }
 
         this.boxes = boxes
 
@@ -47,7 +58,11 @@ class Tetris {
         highScore = newHighScore
     }
     fun getHighScore() : Int{
-        return highScore
+        return this.pref.getInt("highScore", 0)
+    }
+
+    fun getFinalScore() :Int  {
+        return this.pref.getInt("finalScore", 0)
     }
 
     fun setGameActivity(activity: TetrisActivity) {
@@ -79,13 +94,13 @@ class Tetris {
     }
 
     fun validSpawn():Boolean {
-        if (boolGrid[currShape.A.x][currShape.A.y] == false
-            && boolGrid[currShape.B.x][currShape.B.y] == false
-            && boolGrid[currShape.C.x][currShape.C.y] == false
-            && boolGrid[currShape.D.x][currShape.D.y] == false) {
-            return true
+        if (boolGrid[currShape.A.x][currShape.A.y] == true
+            || boolGrid[currShape.B.x][currShape.B.y] == true
+            || boolGrid[currShape.C.x][currShape.C.y] == true
+            || boolGrid[currShape.D.x][currShape.D.y] == true) {
+            return false
         }
-        return false
+        return true
     }
 
     fun placementValid():Boolean {
@@ -94,7 +109,7 @@ class Tetris {
         var C = currShape.C
         var D = currShape.D
 
-        if (A.x < 0 || A.x < 0 || A.x < 0 || A.x < 0) {
+        if (A.x < 0 || B.x < 0 || C.x < 0 || D.x < 0) {
             return false
         }
         return true
@@ -269,17 +284,14 @@ class Tetris {
 
     }
 
-    fun gameOver():Boolean {
-        return false
-    }
+    fun setPreferences() {
 
-    fun setPreferences( context : Context) {
-        var pref : SharedPreferences =
-            context.getSharedPreferences( context.packageName + "_preferences",
-                Context.MODE_PRIVATE )
-        editor = pref.edit()
-        editor.putInt(HIGH_SCORE, score)
-        editor.commit()
+        if (this.score >= this.highScore) {
+            this.e.putInt("highScore", this.score)
+            e.commit()
+        }
+        this.e.putInt("finalScore", this.score)
+        e.commit()
 
     }
     companion object{

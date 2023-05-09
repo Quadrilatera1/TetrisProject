@@ -1,6 +1,7 @@
 package com.example.tetrisgroupproject
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
@@ -19,8 +20,6 @@ import java.util.*
 
 class TetrisActivity: Activity() {
     private lateinit var gameView : GameView
-    private lateinit var game : Tetris
-    private lateinit var detector : GestureDetector
     private lateinit var board : GridLayout
     private lateinit var boxes:Array<Array<Button>>
     private var delta = 1500
@@ -35,6 +34,9 @@ class TetrisActivity: Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        var sp = this.getSharedPreferences(this.packageName + "_preferences", Context.MODE_PRIVATE)
+        var e = sp.edit()
 
         var width : Int = Resources.getSystem( ).displayMetrics.widthPixels
         var height : Int = Resources.getSystem( ).displayMetrics.heightPixels
@@ -53,10 +55,10 @@ class TetrisActivity: Activity() {
         }
 
 
-
         var statusBarId : Int = resources.getIdentifier(
             "status_bar_height", "dimen", "android" )
         var statusBarHeight : Int = resources.getDimensionPixelSize( statusBarId )
+
 
         gameView = GameView( this, width, height - statusBarHeight, boxes, this.scoreBox)
         game = gameView.getGame()
@@ -87,11 +89,6 @@ class TetrisActivity: Activity() {
 
 
 
-        var th : TouchHandler = TouchHandler()
-        detector = GestureDetector( this, th )
-        detector.setOnDoubleTapListener( th )
-
-
         game.spawnShape()
 
         this.gameTimer = Timer( )
@@ -109,11 +106,6 @@ class TetrisActivity: Activity() {
 
     fun updateModel() {
 
-
-        if (game.validSpawn() == false) {
-            Log.i("UpdateModel", "No spawn position available: game should end")
-        }
-
         updateSpeed()
 
         if (game.blockShouldStop()) {
@@ -122,8 +114,25 @@ class TetrisActivity: Activity() {
                 game.setBlockRestingPlace()
                 game.score += 10
                 game.spawnShape()
+
+                if (game.validSpawn() == false) {
+
+                    this.gameTimer.cancel()
+                    this.gameTimer.purge()
+                    game.setPreferences()
+                    this.finish()
+                    var myIntent : Intent = Intent( this, GameOverActivity::class.java )
+                    startActivity( myIntent )
+                }
+
             } else {
-                Log.i("UpdateModel", "Bad placement: game should end")
+                this.gameTimer.cancel()
+                this.gameTimer.purge()
+                game.setPreferences()
+                this.finish()
+                var myIntent : Intent = Intent( this, GameOverActivity::class.java )
+                startActivity( myIntent )
+                this.finish()
             }
         }
 
@@ -136,7 +145,12 @@ class TetrisActivity: Activity() {
         }
 
         if (game.pastTop()) {
-            Log.i("updateModel", "The game should end")
+            this.gameTimer.cancel()
+            this.gameTimer.purge()
+            game.setPreferences()
+            this.finish()
+            var myIntent : Intent = Intent( this, GameOverActivity::class.java )
+            startActivity( myIntent )
         }
 
         game.moveShapeDown()
@@ -209,27 +223,8 @@ class TetrisActivity: Activity() {
         }
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        if( event != null ) {
-            detector.onTouchEvent( event )
-        }
-        return super.onTouchEvent(event)
-    }
 
-    inner class TouchHandler : GestureDetector.SimpleOnGestureListener ( ) {
-
-        override fun onScroll(
-            e1: MotionEvent,
-            e2: MotionEvent,
-            distanceX: Float,
-            distanceY: Float
-        ): Boolean {
-            return super.onScroll(e1, e2, distanceX, distanceY)
-        }
-
-        override fun onLongPress(e: MotionEvent) {
-            super.onLongPress(e)
-        }
-
+    companion object {
+        lateinit var game:Tetris
     }
 }
