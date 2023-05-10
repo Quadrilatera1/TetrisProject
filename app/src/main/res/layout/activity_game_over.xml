@@ -19,10 +19,8 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-
-
             android:background="#000000"
-            android:textColor="#00FFFF"
+            android:textColor="#FF0000"
             android:textSize="50dp"
             android:text="GAME OVER"
             android:textAlignment="center"
@@ -31,6 +29,7 @@
             android:layout_row="0"
             android:layout_column="0"
             />
+
         <TextView
             android:id="@+id/endHighScoreBox"
             android:layout_width="300sp"
