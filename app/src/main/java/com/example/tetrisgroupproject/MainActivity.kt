@@ -1,6 +1,7 @@
 package com.example.tetrisgroupproject
 
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Intent
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +19,8 @@ class MainActivity : AppCompatActivity() {
     fun playTetris( v : View) {
         // go to DataActivity
         var myIntent : Intent = Intent( this, TetrisActivity::class.java )
-        startActivity( myIntent )
+        var b:Bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+        startActivity(myIntent, b)
     }
 
 

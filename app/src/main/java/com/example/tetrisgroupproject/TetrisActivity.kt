@@ -1,6 +1,7 @@
 package com.example.tetrisgroupproject
 
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
@@ -29,14 +30,21 @@ class TetrisActivity: Activity() {
     private lateinit var downButton:Button
     private lateinit var rotateButton:Button
     private lateinit var scoreBox:TextView
+    private lateinit var b:Bundle
 
 
+    override fun finish() {
+        super.finish()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         var sp = this.getSharedPreferences(this.packageName + "_preferences", Context.MODE_PRIVATE)
         var e = sp.edit()
+
+        b = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+
 
         var width : Int = Resources.getSystem( ).displayMetrics.widthPixels
         var height : Int = Resources.getSystem( ).displayMetrics.heightPixels
@@ -95,10 +103,7 @@ class TetrisActivity: Activity() {
         gameTimer.schedule( GameTimerTask( this ), 0, 0L + this.delta)
 
     }
-    fun goBack( v : View) {
-        // go back
-        finish( )
-    }
+
     fun updateView() {
         gameView.updateGrid()
     }
@@ -120,19 +125,19 @@ class TetrisActivity: Activity() {
                     this.gameTimer.cancel()
                     this.gameTimer.purge()
                     game.setPreferences()
+                    this.finishScene()
+
                     this.finish()
-                    var myIntent : Intent = Intent( this, GameOverActivity::class.java )
-                    startActivity( myIntent )
                 }
 
             } else {
                 this.gameTimer.cancel()
                 this.gameTimer.purge()
                 game.setPreferences()
+                this.finishScene()
+
                 this.finish()
-                var myIntent : Intent = Intent( this, GameOverActivity::class.java )
-                startActivity( myIntent )
-                this.finish()
+
             }
         }
 
@@ -148,12 +153,18 @@ class TetrisActivity: Activity() {
             this.gameTimer.cancel()
             this.gameTimer.purge()
             game.setPreferences()
+            this.finishScene()
             this.finish()
-            var myIntent : Intent = Intent( this, GameOverActivity::class.java )
-            startActivity( myIntent )
         }
 
         game.moveShapeDown()
+    }
+
+    fun finishScene() {
+
+        var myIntent : Intent = Intent( this, GameOverActivity::class.java )
+        startActivity( myIntent, this.b)
+
     }
 
     fun updateSpeed() {

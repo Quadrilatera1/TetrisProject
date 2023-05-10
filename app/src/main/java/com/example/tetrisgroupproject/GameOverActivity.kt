@@ -1,6 +1,7 @@
 package com.example.tetrisgroupproject
 
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -57,7 +58,8 @@ class GameOverActivity : Activity() {
 
     fun playAgain() {
         var myIntent : Intent = Intent( this, TetrisActivity::class.java )
-        startActivity( myIntent )
+        var b:Bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+        startActivity( myIntent, b )
     }
 
     fun goToLeaderBoards() {

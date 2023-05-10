@@ -109,7 +109,8 @@ class Tetris {
         var C = currShape.C
         var D = currShape.D
 
-        if (A.x < 0 || B.x < 0 || C.x < 0 || D.x < 0) {
+        if (A.x < 0 || B.x < 0 || C.x < 0 || D.x < 0
+            || boolGrid[A.x][A.y] || boolGrid [B.x][B.y] || boolGrid[C.x][C.y] || boolGrid[D.x][D.y]) {
             return false
         }
         return true
