@@ -117,7 +117,7 @@ class TetrisActivity: Activity() {
             if (game.placementValid()) {
                 game.currShape.falling = false
                 game.setBlockRestingPlace()
-                game.score += 10
+                game.score += 50
                 game.spawnShape()
 
                 if (game.validSpawn() == false) {
@@ -144,7 +144,7 @@ class TetrisActivity: Activity() {
         for (i in 0..game.boolGrid.size-1) {
             if (game.rowIsFull(i)) {
                 game.clearRow(i)
-                game.score += 50
+                game.score += 100
                 game.moveAboveRowsDown(i)
             }
         }
