@@ -40,7 +40,7 @@ class GameView : View  {
         for (i in 0..game.boolGrid.size-1) {
             for (j in 0..game.boolGrid[i].size-1) {
                 if (game.boolGrid[i][j] == false) {
-                    boxes[i][j].background = ColorDrawable(Color.WHITE)
+                    boxes[i][j].background = ColorDrawable(Color.BLACK)
                 }
             }
         }

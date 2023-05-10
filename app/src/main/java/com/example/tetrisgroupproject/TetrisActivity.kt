@@ -57,7 +57,7 @@ class TetrisActivity: Activity() {
         this.boxes = Array(24, {i->Array<Button>(11, {j->Button(this)})})
         for (i in 0..boxes.size-1) {
             for (j in 0..boxes[i].size-1) {
-                boxes[i][j].background = ColorDrawable(Color.WHITE)
+                boxes[i][j].background = ColorDrawable(Color.BLACK)
                 board.addView(boxes[i][j], 57, 57)
             }
         }
@@ -210,6 +210,10 @@ class TetrisActivity: Activity() {
             this.gameTimer = Timer()
             this.gameTimer.schedule(GameTimerTask(this), 0, 0L + this.delta)
 
+        }
+
+        if (this.delta == 50) {
+            return
         }
     }
 
