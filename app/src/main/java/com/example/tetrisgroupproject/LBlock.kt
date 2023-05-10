@@ -64,7 +64,7 @@ class LBlock(x:Int, y:Int):Block(x,y) {
             C.y = A.y
             D.x = A.x+1
             D.y = A.y+1
-            state = 1
+            state = 0
         }
 
     }
