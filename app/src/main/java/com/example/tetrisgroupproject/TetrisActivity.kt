@@ -204,7 +204,7 @@ class TetrisActivity: Activity() {
         }
 
         if (game.score >= 2500 && this.delta == 200) {
-            this.delta = 50
+            this.delta = 100
             this.gameTimer.cancel()
             this.gameTimer.purge()
             this.gameTimer = Timer()
@@ -212,7 +212,7 @@ class TetrisActivity: Activity() {
 
         }
 
-        if (this.delta == 50) {
+        if (this.delta == 100) {
             return
         }
     }
