@@ -42,6 +42,7 @@ class GameOverActivity : Activity() {
             newHighScoreBox.text = "New High Score!: "+finalScore
             finalScoreBox.text = "Thanks for Playing!"
 
+
         } else {
             finalScoreBox.text = "Final Score: "+finalScore
             newHighScoreBox.text = "Previous High Score: "+highScore
